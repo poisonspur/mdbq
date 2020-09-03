@@ -86,7 +86,6 @@ app.get('/weather*', function(req, res) {
         (async () => {
             console.log('finding weather for ' + zip);
             var feed = await parser.parseURL('http://www.rssweather.com/zipcode/' + zip + '/rss.php');
-            console.log(feed.items[0]);
             res.send(feed.items[0]);
         })();
     });

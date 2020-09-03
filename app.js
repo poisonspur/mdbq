@@ -16,12 +16,10 @@ app.listen(8081, function() {
 });
 
 app.get('/', function(req, res) {
-    console.log('blah');
-    res.send('Hello World!');
+    res.send('placeholder');
 });
 
 app.get('/feeds*', function(req,res) {
-    console.log('getting feeds');
     var url = require('url');
     var url_parts = url.parse(req.url, true);
     MongoClient.connect('mongodb://localhost:27017/', { useUnifiedTopology: true }, function(err, mongoConn) {
@@ -56,7 +54,11 @@ app.get('/feeds*', function(req,res) {
 
 app.get('/weather*', function(req, res) {
     var url_parts = url.parse(req.url, true);
-    var ip = getClientIp(req);
+    console.log(url_parts);
+    var ip = url_parts.query['ip'];
+    if (!ip) {
+        ip = getClientIp(req);
+    }
     var getZip = new Promise( (resolved, rejected) => {
         memcached.get(ip, function(err,zip) {
             if (zip) {
